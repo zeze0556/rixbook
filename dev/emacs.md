@@ -12,8 +12,155 @@
 ```
 
 ## 启动配置
-我很喜欢使用org-mode来作为emacs初始化时的配置， 这样可以将文档，代码放到同一个文件，并且可以生成好看的文档。只需要在.emacs中添加一句话即可解决.
+我很喜欢使用org-mode来作为emacs初始化时的配置， 这样可以将文档，代码放到同一个文件，并且可以生成好看的文档。只需要在.emacs中添加一句话即可解决. [//]: <> (我自定义了目录)
 ```emacs-lisp
-(org-babel-load-file (expand-file-name "tips.org" user-emacs-directory)) [//]: <> (我自定义了目录)
+(org-babel-load-file (expand-file-name "tips.org" user-emacs-directory)) 
+
+```
+
+## 相关配置生成文件的位置
+当更改了.emacs.d的位置后，不同的主机使用同一份配置，在有同步的情况下，容易发生冲突，因此，将相关内容换个位置
+``` emacs-lisp
+(setq locate-user-emacs-directory "~/.emacs.d")
+(setq server-auth-dir "~/.emacs.d/server")
+```
+
+## spacemacs配置
+我在用evil好多年之后，现在切换成了spacemacs, 但我还想用org-mode来做初始化文件
+```emacs-lisp
+(setq dotspacemacs-configuration-layer-path "~/emacs_config")
+(setq recentf-save-file (expand-file-name "recentf" "~/.emacs.d"))
+(setq dotspacemacs-elpa-https nil)
+(setq dotspacemacs-check-for-update nil)
+(setq package-user-dir (concat user-emacs-directory "/elpa"))
+(setenv "SPACEMACSDIR" user-emacs-directory)
+(setq spacemacs-start-directory (concat user-emacs-directory "/spacemacs/"))
+(load-file (concat spacemacs-start-directory "init.el"))
+```
+
+## org-mode
+### org 导出pdf
+windows 使用 ctex 生成 pdf
+```emacs-lisp
+(setq org-latex-compiler "xelatex")
+(setq org-latex-default-class "ctexart")
+(unless (boundp 'org-latex-classes) (setq org-latex-classes nil))
+(add-to-list 'org-latex-classes
+             '("ctexart"
+               "\\documentclass[fancyhdr,fntef,UTF8,a4paper,cs4size]{ctexart}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+(add-to-list 'org-latex-classes
+             '("ctexrep"
+               "\\documentclass[fancyhdr,fntef,UTF8,a4paper,cs4size]{ctexrep}"
+               ("\\part{%s}" . "\\part*{%s}")
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+(add-to-list 'org-latex-classes
+             '("ctexbook"
+               "\\documentclass[fancyhdr,fntef,UTF8,a4paper,cs4size]{ctexbook}"
+               ("\\part{%s}" . "\\part*{%s}")
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+(add-to-list 'org-latex-classes
+             '("beamer"
+               "\\documentclass{beamer}
+           \\usepackage[fntef,nofonts,fancyhdr]{ctex}"
+               org-beamer-sectioning))
+```
+
+## 编程
+### smart 编译，自动查找 makefile
+并不是 smartcompile 插件, 绑定快捷键之后爽歪歪啊
+```emacs-lisp
+(defun smart-compile-is-root-dir(try-dir)
+  (or
+   ;; windows root dir for a driver or Unix root
+   (string-match "\\`\\([a-zA-Z]:\\)?/$" try-dir)
+   ;; tramp root-dir
+   (and (featurep 'tramp)
+        (string-match (concat tramp-file-name-regexp ".*:/$") try-dir))))
+
+(defun smart-compile-throw-final-path(try-dir)
+  (cond
+   ;; tramp root-dir
+   ((and (featurep 'tramp)
+         (string-match tramp-file-name-regexp try-dir))
+    (with-parsed-tramp-file-name try-dir foo
+        foo-localname))
+   (t try-dir)))
+
+(defun smart-compile-find-make-dir( try-dir)
+  "return a directory contain makefile. try-dir is absolute path."
+  (if (smart-compile-is-root-dir try-dir)
+      nil ;; return nil if failed to find such directory.
+    (let ((candidate-make-file-name '("GNUmakefile" "makefile" "Makefile")))
+      (or (catch 'break
+            (mapc (lambda (f)
+                    (if (file-readable-p (concat (file-name-as-directory try-dir) f))
+                        (throw 'break (smart-compile-throw-final-path try-dir))))
+                  candidate-make-file-name)
+            nil)
+          (smart-compile-find-make-dir
+           (expand-file-name (concat (file-name-as-directory try-dir) "..")))))))
+
+(defun wcy-tramp-compile (arg-cmd)
+  "reimplement the remote compile."
+  (interactive "scompile:")
+  (with-parsed-tramp-file-name default-directory foo
+    (let* ((key (format "/plink:%s@%s:" foo-user foo-host))
+           (passwd (password-read "PASS:" key))
+           (cmd (format "plink %s -l %s -pw %s \"(cd %s ; %s)\""
+                         foo-host foo-user
+                         passwd
+                         (file-name-directory foo-localname)
+                         arg-cmd)))
+      (password-cache-add key passwd)
+      (save-some-buffers nil nil)
+      (compile-internal cmd "No more errors")
+      ;; Set comint-file-name-prefix in the compilation buffer so
+      ;; compilation-parse-errors will find referenced files by ange-ftp.
+      (with-current-buffer compilation-last-buffer
+        (set (make-local-variable 'comint-file-name-prefix)
+             (format "/plink:%s@%s:" foo-user foo-host))))))
+
+(defun smart-compile-test-tramp-compile ()
+  (or (and (featurep 'tramp)
+           (string-match tramp-file-name-regexp (buffer-file-name))
+           (progn
+             (if (not (featurep 'tramp-util)) (require 'tramp-util))
+             'wcy-tramp-compile))
+      'compile))
+(defun smart-compile-get-local-file-name (file-name)
+  (if (and
+       (featurep 'tramp)
+       (string-match tramp-file-name-regexp file-name))
+      (with-parsed-tramp-file-name file-name foo
+        foo-localname)
+    file-name))
+(defun smart-compile ()
+  (interactive)
+  (let* ((compile-func (smart-compile-test-tramp-compile))
+         (dir (smart-compile-find-make-dir (expand-file-name "."))))
+    (funcall compile-func
+             (if dir
+                 (concat "make -C " dir (if (eq compile-func 'tramp-compile) "&" ""))
+               (concat
+                (cond
+                 ((eq major-mode 'c++-mode) "g++ -g -o ")
+                 ((eq major-mode 'c-mode) "gcc -g -o "))
+                (smart-compile-get-local-file-name (file-name-sans-extension
+             (buffer-file-name)))
+                " "
+                (smart-compile-get-local-file-name (buffer-file-name)))))))
+;;smart end
+(global-set-key [f7] 'smart-compile)
 
 ```
