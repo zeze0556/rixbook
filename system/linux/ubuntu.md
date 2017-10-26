@@ -1,3 +1,16 @@
+
+# 相关问题
+## gpg错误
+```bash
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+```
+
+## wifi 速度慢
+  可能是节能的关系，将节能关掉试试
+ ```bash
+ sudo iwconfig wlan2 power off
+ ``` 
+
 # 切换java版本
 
 ``` bash
@@ -25,10 +38,13 @@ sudo bash /opt/longene/qq/qq.sh
 然后即可运行，以后运行时按windows键，输入QQ，看到QQ的图标单击即可
 无法输入中文件的问题
 
-#open the file using below cmd
+open the file using below cmd
+```
 sudo vim /opt/longene/tm2013/tm2013.sh 
-
-#add by cherish
+```
+add by cherish
+```
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+```
