@@ -14,6 +14,6 @@
 ## 启动配置
 我很喜欢使用org-mode来作为emacs初始化时的配置， 这样可以将文档，代码放到同一个文件，并且可以生成好看的文档。只需要在.emacs中添加一句话即可解决.
 ```emacs-lisp
-(org-babel-load-file (expand-file-name "tips.org" user-emacs-directory)) [//] <> (我自定义了目录)
+(org-babel-load-file (expand-file-name "tips.org" user-emacs-directory)) [//]: <> (我自定义了目录)
 
 ```
