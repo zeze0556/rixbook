@@ -16,3 +16,27 @@ blocksize为密钥文件的大小， 单独可能没太大用，但如果将key�
 action可以为 open, close, format, dump 对应的使cryptsetup的 open, close, format,luksDump
 
 这样一来， 主要只用记住密钥文件的偏移即可。
+
+# tor网站服务
+
+最简单的方式，生成匿名网站: *.onion, 当然需要tor浏览器来访问
+docker 部署
+```yaml
+version: "3.1"
+services:
+  torservice:
+    image: goldy/tor-hidden-service
+    restart: always
+    links:
+    - hello
+    environment:
+    - HELLO_PORTS=80:80
+    - HELLO_SERVICE_NAME=hello
+    volumes:
+    - ./keys:/var/lib/tor/hidden_service/
+
+  hello:
+    image: nginx:alpine
+    restart: always
+
+```
