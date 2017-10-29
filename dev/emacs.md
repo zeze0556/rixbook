@@ -1,3 +1,20 @@
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [Emacs](#emacs)
+    - [win10 使用emacs建议](#win10-使用emacs建议)
+    - [重定义emacs的.emacs.d](#重定义emacs的emacsd)
+    - [启动配置](#启动配置)
+    - [相关配置生成文件的位置](#相关配置生成文件的位置)
+    - [spacemacs配置](#spacemacs配置)
+    - [org-mode](#org-mode)
+        - [org 导出pdf](#org-导出pdf)
+    - [编程](#编程)
+        - [smart 编译，自动查找 makefile](#smart-编译自动查找-makefile)
+
+<!-- markdown-toc end -->
+
+
 # Emacs
 
 我在用emacs,好多年，但其实， 我是个vimer,我总想不起emacs原生的编辑快捷键
@@ -79,6 +96,11 @@ windows 使用 ctex 生成 pdf
            \\usepackage[fntef,nofonts,fancyhdr]{ctex}"
                org-beamer-sectioning))
 ```
+
+
+## markdown-mode
+
+emacs 的markdown模式太好用了。我再也不用一个一个的输入原生的markdownu语法了。
 
 ## 编程
 ### smart 编译，自动查找 makefile
