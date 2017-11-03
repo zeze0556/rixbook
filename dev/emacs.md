@@ -8,7 +8,9 @@
     - [相关配置生成文件的位置](#相关配置生成文件的位置)
     - [spacemacs配置](#spacemacs配置)
     - [org-mode](#org-mode)
+        - [org babel 执行代码](#org-babel-执行代码)
         - [org 导出pdf](#org-导出pdf)
+    - [markdown-mode](#markdown-mode)
     - [编程](#编程)
         - [smart 编译，自动查找 makefile](#smart-编译自动查找-makefile)
 
@@ -60,6 +62,34 @@
 ```
 
 ## org-mode
+### org babel 执行代码
+
+``` emacs-lisp
+(with-eval-after-load 'org
+    (setq org-confirm-babel-evaluate nil) ; 执行代码取消确认
+    (setq org-bullets-bullet-list '("■" "◆" "▲" "▶")) ; 比默认的太阳星星好些
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (ruby . t)
+       (sql . t)
+       (C . t)
+       (ditaa . t)
+       (makefile . t)
+       (js . t)
+       (elixir . t)
+       (translate . t)
+       (http . t)
+       (python . t)
+       (sh . t)
+       (shell . t)
+       (latex . t)
+       (php . t)
+       (plantuml . t)
+       (R . t)))
+    )
+```
+
 ### org 导出pdf
 windows 使用 ctex 生成 pdf
 ```emacs-lisp
