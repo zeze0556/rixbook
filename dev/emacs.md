@@ -2,6 +2,7 @@
 **Table of Contents**
 
 - [Emacs](#emacs)
+    - [spacemacs 长时间运行无响应](#spacemacs-长时间运行无响应)
     - [win10 使用emacs建议](#win10-使用emacs建议)
     - [重定义emacs的.emacs.d](#重定义emacs的emacsd)
     - [启动配置](#启动配置)
@@ -22,6 +23,15 @@
 我在用emacs,好多年，但其实， 我是个vimer,我总想不起emacs原生的编辑快捷键
 
 我用vim好多年，但其实，大部分时候，我都是在emacs中，除了基本的编辑命令，我不记得vim的其他命令
+
+## spacemacs 长时间运行无响应
+只是尝试,不一定可以解决
+``` emacs-lisp
+(setq history-length 100)
+(put 'minibuffer-history 'history-length 50)
+(put 'evil-ex-history 'history-length 50)
+(put 'kill-ring 'history-length 25)
+```
 
 ## win10 使用emacs建议
 
