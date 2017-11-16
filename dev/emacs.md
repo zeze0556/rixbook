@@ -4,6 +4,7 @@
 - [Emacs](#emacs)
     - [spacemacs 长时间运行无响应](#spacemacs-长时间运行无响应)
     - [win10 使用emacs建议](#win10-使用emacs建议)
+        - [dbus-xxfluS2Izg错误](#dbus-xxflus2izg错误)
     - [重定义emacs的.emacs.d](#重定义emacs的emacsd)
     - [启动配置](#启动配置)
     - [相关配置生成文件的位置](#相关配置生成文件的位置)
@@ -36,6 +37,14 @@
 ## win10 使用emacs建议
 
 个人推荐使用wsl，win10 1709版本支持的很好
+
+### dbus-xxfluS2Izg错误
+
+Failed to connect to socket /tmp/dbus-xxfluS2Izg: Connection refused
+
+``` bash
+export NO_AT_BRIDGE=1
+```
 
 ## 重定义emacs的.emacs.d
 我比较讨厌emacs默认的配置文件的格式，在想要配置的时候总是不好找
