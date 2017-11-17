@@ -3,6 +3,8 @@
 
 - [cryptsetup 整盘加密](#cryptsetup-整盘加密)
 - [tor网站服务](#tor网站服务)
+- [i2p](#i2p)
+    - [i2pd docker-compose 部署](#i2pd-docker-compose-部署)
 
 <!-- markdown-toc end -->
 
@@ -49,3 +51,57 @@ services:
     restart: always
 
 ```
+
+# i2p 
+i2p本身用java写的, i2pd是兼容使用C++写的,这样就不依赖java环境了.而且,使用docker来部署i2pd会更方便.i2p我没有尝试过docker
+
+## i2pd docker-compose 部署
+
+``` yaml
+version: "3.1"
+services:
+  torservice:
+    image: meeh/i2pd
+    links:
+    - hello
+    volumes:
+    - ./data:/var/lib/i2pd:rw
+    - ./tunnels.conf:/var/lib/i2pd/tunnels.conf:rw
+  hello:
+    image: sameersbn/squid
+    volumes:
+      - ./squid:/var/spool/squid3:rw
+
+  hello:
+    image: nginx:alpine
+
+```
+上述配置中,如果要浏览i2pd的状态的话,暴露7070端口.
+tunnels.conf 主要使提供服务的, 比如上面的hello http服务器
+
+``` ini
+[hello]
+type = http
+host = hello
+port = 80
+```
+基本上,i2p就是个网络环境,你在tunnes中可以转发任何服务,类似tor.如果关联一个代理服务器,那这个节点就是出口了.比如squid
+
+``` ini
+[squid]
+type = server
+host = squid
+port = 3128
+keys = squid.dat
+signaturetype=7
+inbound.length=1
+outbound.length=1
+```
+i2pd可以设置自己的出口的socksproxy给自己使用. 启动时设置以下参数:
+--socksproxy.outproxy.enabled=true 
+--socksproxy.outproxy=127.0.0.1
+--socksproxy.outproxyport=9050
+
+或者写入配置文件也可以.
+
+在提供含有出口代理功能的时候需要注意自身的安全,尤其使socks代理
