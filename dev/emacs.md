@@ -38,12 +38,15 @@
 
 个人推荐使用wsl，win10 1709版本支持的很好
 
+使用Xming 而不是 vcxsrv, 我使用vcxsrv, 结果emacs25在打开xming第一次可以正常显示,以后一直是空白的,不显示任何字符,emacs27(emacs-snapshot)无法窗口最大化,窗口最大化后,显示的范围还是刚开始启动时的范围.Xming版本 6.9.0.31 则无论哪种版本都很正常. 
+
 ### dbus-xxfluS2Izg错误
 
 Failed to connect to socket /tmp/dbus-xxfluS2Izg: Connection refused
 
 ``` bash
 export NO_AT_BRIDGE=1
+export LIBGL_ALWAYS_INDIRECT=1
 ```
 
 ## 重定义emacs的.emacs.d
