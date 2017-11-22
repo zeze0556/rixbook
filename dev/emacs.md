@@ -242,3 +242,16 @@ emacs 的markdown模式太好用了。我再也不用一个一个的输入原生
 (global-set-key [f7] 'smart-compile)
 
 ```
+
+### doxymacs 配置
+doxymacs可以生成doxygen的注释格式，就是版本比较老，不过依然兼容到最新的27
+
+``` emacs-lisp
+(setq load-path (cons (concat user-emacs-directory "/doxymacs-1.8.0/lisp") load-path))
+(require 'doxymacs)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+(defun my-doxymacs-font-lock-hook ()
+(if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+(doxymacs-font-lock)))
+(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+```
