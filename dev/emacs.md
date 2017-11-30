@@ -270,3 +270,15 @@ emacs 的markdown模式太好用了。我再也不用一个一个的输入原生
 
 ### 打开大文件
 spacemacs打开大文件真的很慢，而且经常卡死，本来wsl就慢，大文件就更慢了。用SPC f l (find-file-literally)打开就超级快了， 缺点就是中文等显示有问题
+### doxymacs 配置
+doxymacs可以生成doxygen的注释格式，就是版本比较老，不过依然兼容到最新的27
+
+``` emacs-lisp
+(setq load-path (cons (concat user-emacs-directory "/doxymacs-1.8.0/lisp") load-path))
+(require 'doxymacs)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+(defun my-doxymacs-font-lock-hook ()
+(if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
+(doxymacs-font-lock)))
+(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+```
