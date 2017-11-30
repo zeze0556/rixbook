@@ -62,6 +62,31 @@ export LIBGL_ALWAYS_INDIRECT=1
 (org-babel-load-file (expand-file-name "tips.org" user-emacs-directory)) 
 
 ```
+### tern 找不到
+
+``` bash
+sudo npm -g tern
+```
+ubuntu 还需要
+
+``` bash
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+```
+### source code pro 字体
+
+``` bash
+#!/bin/bash
+set  -euo pipefail
+I1FS=$'\n\t'
+mkdir -p /tmp/adodefont
+cd /tmp/adodefont
+wget -q --show-progress -O source-code-pro.zip https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
+unzip -q source-code-pro.zip -d source-code-pro
+mkdir -p ~/.fonts
+cp -v source-code-pro/*/OTF/*.otf ~/.fonts/
+fc-cache -f
+rm -rf source-code-pro{,.zip}
+```
 
 ## 相关配置生成文件的位置
 当更改了.emacs.d的位置后，不同的主机使用同一份配置，在有同步的情况下，容易发生冲突，因此，将相关内容换个位置
@@ -242,3 +267,6 @@ emacs 的markdown模式太好用了。我再也不用一个一个的输入原生
 (global-set-key [f7] 'smart-compile)
 
 ```
+
+### 打开大文件
+spacemacs打开大文件真的很慢，而且经常卡死，本来wsl就慢，大文件就更慢了。用SPC f l (find-file-literally)打开就超级快了， 缺点就是中文等显示有问题
