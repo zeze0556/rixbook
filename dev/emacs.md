@@ -7,6 +7,8 @@
         - [dbus-xxfluS2Izg错误](#dbus-xxflus2izg错误)
     - [重定义emacs的.emacs.d](#重定义emacs的emacsd)
     - [启动配置](#启动配置)
+        - [tern 找不到](#tern-找不到)
+        - [source code pro 字体](#source-code-pro-字体)
     - [相关配置生成文件的位置](#相关配置生成文件的位置)
     - [spacemacs配置](#spacemacs配置)
     - [org-mode](#org-mode)
@@ -15,6 +17,8 @@
     - [markdown-mode](#markdown-mode)
     - [编程](#编程)
         - [smart 编译，自动查找 makefile](#smart-编译自动查找-makefile)
+        - [打开大文件](#打开大文件)
+        - [doxymacs 配置](#doxymacs-配置)
 
 <!-- markdown-toc end -->
 
