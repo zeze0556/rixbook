@@ -1,3 +1,14 @@
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [相关问题](#相关问题)
+    - [gpg错误](#gpg错误)
+    - [wifi 速度慢](#wifi-速度慢)
+- [切换java版本](#切换java版本)
+- [使用QQ](#使用qq)
+- [插入手机，U盘等不自动弹出文件管理器](#插入手机u盘等不自动弹出文件管理器)
+
+<!-- markdown-toc end -->
 
 # 相关问题
 ## gpg错误
@@ -47,4 +58,13 @@ add by cherish
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+```
+
+
+# 插入手机，U盘等不自动弹出文件管理器
+
+每次插入都弹出一个新的，怪烦人的
+
+``` bash
+gsettings set org.gnome.desktop.media-handling automount-open false
 ```
