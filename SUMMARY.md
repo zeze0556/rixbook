@@ -10,6 +10,7 @@
 	* [docker](virtual/docker.md)
 * [开发](dev.md)
 	* [emacs](dev/emacs.md)
+    * [php](dev/php.md)
 	* [安全](dev/safe.md)
 	* [android](dev/android.md)
 	* [java](dev/java.md)
