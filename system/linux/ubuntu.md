@@ -68,3 +68,21 @@ export XMODIFIERS=@im=fcitx
 ``` bash
 gsettings set org.gnome.desktop.media-handling automount-open false
 ```
+
+# 查看 apt 记录
+
+有时候搞错了，不知道之前装了哪些
+
+``` bash
+vi /var/log/apt/history.log
+```
+
+# login界面键盘鼠标无法输入
+
+试试远程是否能能登陆，如果远程可以登陆的话，说明没死。或者过段时间看看屏幕会不会灭或者出现屏保，这都说明系统没死，只是负责处理鼠标的程序出现了问题，或者被卸载了。
+
+``` bash
+apt-get install xserver-xorg-input-evdev
+apt-get install xorg xserver-xorg
+apt-get install xserver-xorg-input-all
+```
