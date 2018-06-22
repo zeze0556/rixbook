@@ -15,4 +15,5 @@
 	* [安全](dev/safe.md)
 	* [android](dev/android.md)
 	* [java](dev/java.md)
+    * [微信小程序](dev/wechat.md)
     
