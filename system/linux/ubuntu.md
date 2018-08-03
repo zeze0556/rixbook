@@ -7,6 +7,11 @@
 - [切换java版本](#切换java版本)
 - [使用QQ](#使用qq)
 - [插入手机，U盘等不自动弹出文件管理器](#插入手机u盘等不自动弹出文件管理器)
+- [查看 apt 记录](#查看-apt-记录)
+- [login界面键盘鼠标无法输入](#login界面键盘鼠标无法输入)
+- [kvm](#kvm)
+    - [kvm 桥接](#kvm-桥接)
+        - [客户端无法动态分配到ip地址](#客户端无法动态分配到ip地址)
 
 <!-- markdown-toc end -->
 
@@ -86,3 +91,17 @@ apt-get install xserver-xorg-input-evdev
 apt-get install xorg xserver-xorg
 apt-get install xserver-xorg-input-all
 ```
+# kvm
+
+## kvm 桥接
+
+### 客户端无法动态分配到ip地址
+
+客户端手动分配ip地址后，可以和host主机进行互相通讯，但无法与之外的主机进行通讯。可能是内核配置的关系: /etc/sysctl.conf
+``` ini
+net.bridge.bridge-nf-call-ip6tables = 0 
+net.bridge.bridge-nf-call-iptables = 0 
+net.bridge.bridge-nf-call-arptables = 0
+
+```
+sysctl -p 可以不重启成效

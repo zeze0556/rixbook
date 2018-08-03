@@ -11,3 +11,4 @@
 mkpasswd -l -c > /etc/passwd
 mkgroup -l -c > /etc/group
 ```
+有人提到注释 /etc/nsswitch.conf 下的所有或者db相关
