@@ -12,6 +12,7 @@
 - [kvm](#kvm)
     - [kvm 桥接](#kvm-桥接)
         - [客户端无法动态分配到ip地址](#客户端无法动态分配到ip地址)
+        - [客户端挂载 virtio 9p 共享目录无法写入](#客户端挂载-virtio-9p-共享目录无法写入)
 
 <!-- markdown-toc end -->
 
@@ -105,3 +106,7 @@ net.bridge.bridge-nf-call-arptables = 0
 
 ```
 sysctl -p 可以不重启成效
+
+### 客户端挂载 virtio 9p 共享目录无法写入
+
+客户端挂载共享目录后，共享目录只能读取，无法写入, 可能是qemu配置有问题, 在/etc/libvirt/qemu.conf 中设置 user="root" 和 group="root" 
