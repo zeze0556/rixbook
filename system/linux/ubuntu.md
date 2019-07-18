@@ -2,6 +2,7 @@
 **Table of Contents**
 
 - [相关问题](#相关问题)
+    - [联想E40-30笔记本无法关机，重启](#联想e40-30笔记本无法关机重启)
     - [gpg错误](#gpg错误)
     - [wifi 速度慢](#wifi-速度慢)
 - [切换java版本](#切换java版本)
@@ -17,6 +18,19 @@
 <!-- markdown-toc end -->
 
 # 相关问题
+## 联想E40-30笔记本无法关机，重启
+似乎无论那个版本，默认都这样，关机后，最好的结果是屏幕黑掉，然后电源还开着。一不小心就弄的
+完全没电开不了机。
+
+从网上找到的添加acpi=force, apm=power_off, apm=on之类的，最多的效果就是屏幕黑了，但关不了机。重启也是偶尔可以重启。
+
+通过阅读文档，并经过上百次的组合测试，最后启动添加的参数如下:
+
+```
+apm=on apm=power_off acpi=force reboot=pci pci=noacpi
+```
+上述的参数可以正常关机，重启。我自己觉得最重要的应该是最后的两个， reboot=pci后，基本可以实现正常重启，但关机似乎不能断电。然后添加上pci=noacpi后，关机可以断电了。
+
 ## gpg错误
 ```bash
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
